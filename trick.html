@@ -2,24 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Trick</title>
+  <title>Trick Details</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<a href="index.html">⬅ Back</a>
+<header>
+  <a href="index.html" class="back-button">⬅ Back to Tricks</a>
+  <h1 id="name"></h1>
+  <p><strong>Level:</strong> <span id="level"></span></p>
+</header>
 
-<h1 id="name"></h1>
-<p><strong>Level:</strong> <span id="level"></span></p>
+<main>
+  <section>
+    <h3>How to do it</h3>
+    <p id="how"></p>
+  </section>
 
-<h3>How to do it</h3>
-<p id="how"></p>
+  <section>
+    <h3>Prerequisites</h3>
+    <ul id="pre"></ul>
+  </section>
 
-<h3>Prerequisites</h3>
-<ul id="pre"></ul>
-
-<h3>Video</h3>
-<iframe id="video" width="560" height="315" allowfullscreen></iframe>
+  <section>
+    <h3>Video</h3>
+    <iframe id="video" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+  </section>
+</main>
 
 <script src="data.js"></script>
 <script>
@@ -28,18 +37,22 @@ const id = params.get("id");
 
 const trick = [...bodyboardTricks, ...standupTricks].find(t => t.id === id);
 
-document.getElementById("name").textContent = trick.name;
-document.getElementById("level").textContent = trick.level;
-document.getElementById("how").textContent = trick.how;
+if(trick){
+  document.getElementById("name").textContent = trick.name;
+  document.getElementById("level").textContent = trick.level;
+  document.getElementById("how").textContent = trick.how;
 
-const preList = document.getElementById("pre");
-trick.pre.forEach(p => {
-  const li = document.createElement("li");
-  li.textContent = p;
-  preList.appendChild(li);
-});
+  const preList = document.getElementById("pre");
+  trick.pre.forEach(p=>{
+    const li = document.createElement("li");
+    li.textContent = p;
+    preList.appendChild(li);
+  });
 
-document.getElementById("video").src = trick.video;
+  document.getElementById("video").src = trick.video !== "TBD" ? trick.video : "";
+}else{
+  document.body.innerHTML = "<h2>Trick not found</h2><a href='index.html'>Back to Tricks</a>";
+}
 </script>
 
 </body>

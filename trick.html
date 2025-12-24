@@ -11,6 +11,7 @@
   <a href="index.html" class="back-button">⬅ Back to Tricks</a>
   <h1 id="name"></h1>
   <p>Level: <span id="level"></span></p>
+  <button id="theme-toggle">Toggle Dark/Light</button>
 </header>
 
 <main>
@@ -25,54 +26,25 @@
   </section>
 
   <section>
+    <h3>Tips & Common Mistakes <span id="toggle-tips" class="toggle-button">[Show]</span></h3>
+    <ul id="tips" class="collapsed">
+      <li>Stay centered on your board.</li>
+      <li>Keep eyes on the wave direction.</li>
+    </ul>
+  </section>
+
+  <section>
     <h3>Video</h3>
     <iframe id="video" width="560" height="315" frameborder="0" allowfullscreen></iframe>
+  </section>
+
+  <section>
+    <button id="learned-btn">Mark as Learned</button>
   </section>
 </main>
 
 <script src="data.js"></script>
-<script>
-const levelColors = {
-  "Beginner": "#2ecc71",
-  "Lower Intermediate": "#3498db",
-  "Intermediate": "#f1c40f",
-  "Advanced": "#e67e22",
-  "Expert": "#e74c3c",
-  "Beginner → Intermediate": "#27ae60",
-  "Intermediate → Advanced": "#f39c12"
-};
+<script src="script.js"></script>
 
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
-const trick = [...bodyboardTricks, ...standupTricks].find(t => t.id === id);
-
-if(trick){
-  document.getElementById("name").textContent = trick.name;
-  document.getElementById("level").textContent = trick.level;
-  document.getElementById("level").style.color = levelColors[trick.level] || "#fff";
-  document.getElementById("how").textContent = trick.how;
-
-  const preList = document.getElementById("pre");
-  trick.pre.forEach(p=>{
-    const li = document.createElement("li");
-    li.textContent = p;
-    preList.appendChild(li);
-  });
-
-  const iframe = document.getElementById("video");
-  iframe.src = trick.video !== "TBD" ? trick.video : "";
-
-  // Collapsible prerequisites
-  const toggleBtn = document.getElementById("toggle-pre");
-  toggleBtn.addEventListener("click", ()=>{
-    preList.classList.toggle("collapsed");
-    toggleBtn.textContent = preList.classList.contains("collapsed") ? "[Show]" : "[Hide]";
-  });
-
-}else{
-  document.body.innerHTML = "<h2>Trick not found</h2><a href='index.html'>Back to Tricks</a>";
-}
-</script>
 </body>
 </html>

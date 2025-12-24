@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Trick</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="index.html">⬅ Back</a>
+
+<h1 id="name"></h1>
+<p><strong>Level:</strong> <span id="level"></span></p>
+
+<h3>How to do it</h3>
+<p id="how"></p>
+
+<h3>Prerequisites</h3>
+<ul id="pre"></ul>
+
+<h3>Video</h3>
+<iframe id="video" width="560" height="315" allowfullscreen></iframe>
+
+<script src="data.js"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+const trick = [...bodyboardTricks, ...standupTricks].find(t => t.id === id);
+
+document.getElementById("name").textContent = trick.name;
+document.getElementById("level").textContent = trick.level;
+document.getElementById("how").textContent = trick.how;
+
+const preList = document.getElementById("pre");
+trick.pre.forEach(p => {
+  const li = document.createElement("li");
+  li.textContent = p;
+  preList.appendChild(li);
+});
+
+document.getElementById("video").src = trick.video;
+</script>
+
+</body>
+</html>

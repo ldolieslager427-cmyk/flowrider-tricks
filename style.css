@@ -1,0 +1,19 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #0b1c2d;
+  color: white;
+  padding: 20px;
+}
+
+button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+a {
+  color: #66ccff;
+  text-decoration: none;
+}

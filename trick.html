@@ -10,7 +10,7 @@
 <header>
   <a href="index.html" class="back-button">⬅ Back to Tricks</a>
   <h1 id="name"></h1>
-  <p><strong>Level:</strong> <span id="level"></span></p>
+  <p>Level: <span id="level"></span></p>
 </header>
 
 <main>
@@ -20,8 +20,8 @@
   </section>
 
   <section>
-    <h3>Prerequisites</h3>
-    <ul id="pre"></ul>
+    <h3>Prerequisites <span id="toggle-pre" class="toggle-button">[Show]</span></h3>
+    <ul id="pre" class="collapsed"></ul>
   </section>
 
   <section>
@@ -32,6 +32,16 @@
 
 <script src="data.js"></script>
 <script>
+const levelColors = {
+  "Beginner": "#2ecc71",
+  "Lower Intermediate": "#3498db",
+  "Intermediate": "#f1c40f",
+  "Advanced": "#e67e22",
+  "Expert": "#e74c3c",
+  "Beginner → Intermediate": "#27ae60",
+  "Intermediate → Advanced": "#f39c12"
+};
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
@@ -40,6 +50,7 @@ const trick = [...bodyboardTricks, ...standupTricks].find(t => t.id === id);
 if(trick){
   document.getElementById("name").textContent = trick.name;
   document.getElementById("level").textContent = trick.level;
+  document.getElementById("level").style.color = levelColors[trick.level] || "#fff";
   document.getElementById("how").textContent = trick.how;
 
   const preList = document.getElementById("pre");
@@ -49,11 +60,19 @@ if(trick){
     preList.appendChild(li);
   });
 
-  document.getElementById("video").src = trick.video !== "TBD" ? trick.video : "";
+  const iframe = document.getElementById("video");
+  iframe.src = trick.video !== "TBD" ? trick.video : "";
+
+  // Collapsible prerequisites
+  const toggleBtn = document.getElementById("toggle-pre");
+  toggleBtn.addEventListener("click", ()=>{
+    preList.classList.toggle("collapsed");
+    toggleBtn.textContent = preList.classList.contains("collapsed") ? "[Show]" : "[Hide]";
+  });
+
 }else{
   document.body.innerHTML = "<h2>Trick not found</h2><a href='index.html'>Back to Tricks</a>";
 }
 </script>
-
 </body>
 </html>

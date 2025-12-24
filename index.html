@@ -1,36 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>FlowRider Trick Progression</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<h1>FlowRider Tricks (Easiest → Hardest)</h1>
+<header>
+  <h1>FlowRider Tricks</h1>
+  <p>Click a trick to see how to do it, prerequisites, and a video!</p>
+</header>
 
-<h2>🏄‍♂️ Bodyboard</h2>
-<div id="bodyboard"></div>
+<main>
+  <section>
+    <h2>🏄‍♂️ Bodyboard</h2>
+    <div id="bodyboard"></div>
+  </section>
 
-<h2>🏂 Stand-Up</h2>
-<div id="standup"></div>
+  <section>
+    <h2>🏂 Stand-Up</h2>
+    <div id="standup"></div>
+  </section>
+</main>
 
 <script src="data.js"></script>
 <script>
-function createButtons(tricks, containerId) {
-  const container = document.getElementById(containerId);
-  tricks.forEach(trick => {
-    const btn = document.createElement("button");
-    btn.textContent = trick.level + " – " + trick.name;
-    btn.onclick = () => {
-      window.location.href = `trick.html?id=${trick.id}`;
-    };
-    container.appendChild(btn);
-  });
-}
+  // Helper: Sort tricks by level (Beginner → Expert)
+  const levelOrder = ["Beginner","Lower Intermediate","Intermediate","Advanced","Expert","Beginner → Intermediate","Intermediate → Advanced"];
 
-createButtons(bodyboardTricks, "bodyboard");
-createButtons(standupTricks, "standup");
+  function sortTricks(tricks){
+    return tricks.sort((a,b)=> levelOrder.indexOf(a.level) - levelOrder.indexOf(b.level));
+  }
+
+  function createButtons(tricks, containerId){
+    const container = document.getElementById(containerId);
+    const sorted = sortTricks(tricks);
+    sorted.forEach(trick => {
+      const btn = document.createElement("button");
+      btn.textContent = trick.level + " – " + trick.name;
+      btn.onclick = () => {
+        window.location.href = `trick.html?id=${trick.id}`;
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  createButtons(bodyboardTricks, "bodyboard");
+  createButtons(standupTricks, "standup");
 </script>
 
 </body>

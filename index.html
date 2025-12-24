@@ -10,6 +10,7 @@
 <header>
   <h1>FlowRider Tricks</h1>
   <p>Click a trick to see how to do it, prerequisites, and a video!</p>
+  <input type="text" id="search" placeholder="Search for a trick..." />
 </header>
 
 <main>
@@ -26,29 +27,50 @@
 
 <script src="data.js"></script>
 <script>
-  // Helper: Sort tricks by level (Beginner → Expert)
-  const levelOrder = ["Beginner","Lower Intermediate","Intermediate","Advanced","Expert","Beginner → Intermediate","Intermediate → Advanced"];
+const levelColors = {
+  "Beginner": "#2ecc71",
+  "Lower Intermediate": "#3498db",
+  "Intermediate": "#f1c40f",
+  "Advanced": "#e67e22",
+  "Expert": "#e74c3c",
+  "Beginner → Intermediate": "#27ae60",
+  "Intermediate → Advanced": "#f39c12"
+};
 
-  function sortTricks(tricks){
-    return tricks.sort((a,b)=> levelOrder.indexOf(a.level) - levelOrder.indexOf(b.level));
+const levelOrder = ["Beginner","Lower Intermediate","Intermediate","Advanced","Expert","Beginner → Intermediate","Intermediate → Advanced"];
+
+function sortTricks(tricks){
+  return tricks.sort((a,b)=> levelOrder.indexOf(a.level) - levelOrder.indexOf(b.level));
+}
+
+function createButtons(tricks, containerId){
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
+  const sorted = sortTricks(tricks);
+  sorted.forEach(trick => {
+    const btn = document.createElement("button");
+    btn.textContent = trick.level + " – " + trick.name;
+    btn.style.backgroundColor = levelColors[trick.level] || "#1e3d59";
+    btn.onclick = () => {
+      window.location.href = `trick.html?id=${trick.id}`;
+    };
+    container.appendChild(btn);
+  });
+}
+
+createButtons(bodyboardTricks, "bodyboard");
+createButtons(standupTricks, "standup");
+
+// SEARCH/FILTER
+document.getElementById("search").addEventListener("input", e=>{
+  const query = e.target.value.toLowerCase();
+  function filter(tricks, containerId){
+    const filtered = tricks.filter(t=> t.name.toLowerCase().includes(query));
+    createButtons(filtered, containerId);
   }
-
-  function createButtons(tricks, containerId){
-    const container = document.getElementById(containerId);
-    const sorted = sortTricks(tricks);
-    sorted.forEach(trick => {
-      const btn = document.createElement("button");
-      btn.textContent = trick.level + " – " + trick.name;
-      btn.onclick = () => {
-        window.location.href = `trick.html?id=${trick.id}`;
-      };
-      container.appendChild(btn);
-    });
-  }
-
-  createButtons(bodyboardTricks, "bodyboard");
-  createButtons(standupTricks, "standup");
+  filter(bodyboardTricks, "bodyboard");
+  filter(standupTricks, "standup");
+});
 </script>
-
 </body>
 </html>
